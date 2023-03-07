@@ -7,73 +7,64 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Quantico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Teko&display=swap" rel="stylesheet">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+    </style>
   </head>
   <body>
     <script>
-      let charSize = 142.69;
-      let textString = 'TAYLOR.WTF';
-      let glitchedString = '9k.WTF';
-      let textColors = [];
-      let jitterStrength = 100;
-      let maxDist ;
-      let pointerResponse = .0001;
-      let clickCount = 0;
-      let fonts = ['Orbitron', 'Quantico', 'Teko'];
-
+      let charSize=142.69,textString='TAYLOR.WTF',glitchedString='9k.WTF',jitterStrength=100,maxDist,pointerResponse=.0001,clickCount=0,fonts=['Orbitron','Quantico','Teko'];
       function setup() {
-        createCanvas(windowWidth, windowHeight);
-        textAlign(CENTER, CENTER);
+        createCanvas(windowWidth,windowHeight);
+        textAlign(CENTER,CENTER);
         textSize(charSize);
-        colorMode(HSB, 360, 100, 100);
-        maxDist = dist(0, 0, width / 2, height / 2);
+        colorMode(HSB,360,100,100);
+        maxDist=dist(0,0,width/2,height/2);
         glitchText();
       }
-
       function draw() {
         background(0);
         noStroke();
-        let textWidth = glitchedString.length * charSize * .75;
-        let xStart = (width - textWidth) / 1.5;
-        for (let i = 0; i < glitchedString.length; i++) {
-          let hue = map(mouseX, 0, width, 200, 340);
-          let saturation = map(mouseY, 0, height, 70, 100);
-          fill(hue, saturation, 100);
-          let x = xStart + i * charSize * 0.75;
-          let y = height / 2;
-          let distToPointer = dist(x, y, mouseX, mouseY) * pointerResponse;
-          let jitterStrengthScaled = map(distToPointer, 0, maxDist, jitterStrength, 0);
-          let angle = atan2(y - mouseY, x - mouseX);
-          let newX = x + cos(angle) * jitterStrengthScaled;
-          let newY = y + sin(angle) * jitterStrengthScaled;
-          textFont(fonts[i % fonts.length], charSize + distToPointer / 10);
+        let textWidth=glitchedString.length*charSize*.75;
+        let xStart=(width-textWidth)/2;
+        for(let i=0;i<glitchedString.length;i++) {
+          let hue=map(mouseX,0,width,200,340);
+          let saturation=map(mouseY,0,height,70,100);
+          fill(hue,saturation,100);
+          let x=xStart+i*charSize*0.75;
+          let y=height/2;
+          let distToPointer=dist(x,y,mouseX,mouseY)*pointerResponse;
+          let jitterStrengthScaled=map(distToPointer,0,maxDist,jitterStrength,0);
+          let angle=atan2(y-mouseY,x-mouseX);
+          let newX=x+cos(angle)*jitterStrengthScaled;
+          let newY=y+sin(angle)*jitterStrengthScaled;
+          textFont(fonts[i%fonts.length],charSize+distToPointer/10);
           fill(255);
-          text(glitchedString[i], newX, newY);
+          text(glitchedString[i],newX,newY);
         }
       }
-
       function glitchText() {
-        glitchedString = '';
-        textColors = [];
-        for (let i = 0; i < textString.length; i++) {
-          let glitchedChar = textString.charAt(i);
-          glitchedString += glitchedChar;
-          textColors[i] = random(240, 300);
+        glitchedString='';
+        for(let i=0;i<textString.length;i++) {
+          let glitchedChar=textString.charAt(i);
+          glitchedString+=glitchedChar;
         }
-        // Insert some random glitches
-        for (let i = 0; i < textString.length / 4; i++) {
-          let glitchIndex = floor(random(textString.length));
-          glitchedString = glitchedString.substring(0, glitchIndex) + String.fromCharCode(floor(random(65535))) + glitchedString.substring(glitchIndex + 1);
+        for(let i=0;i<textString.length/4;i++) {
+          let glitchIndex=floor(random(textString.length));
+          glitchedString=glitchedString.substring(0,glitchIndex)+String.fromCharCode(floor(random(65535)))+glitchedString.substring(glitchIndex+1);
         }
       }
-
       function mouseMoved() {
         glitchText();
       }
-
       function mouseClicked() {
         clickCount++;
-        if (clickCount >= 5) {
-          window.location.href = "https://market.taylor.wtf/";
+        if(clickCount>=5) {
+          window.location.href="https://market.taylor.wtf/";
         } else {
           glitchText();
         }
